@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -30,31 +30,20 @@ angular.module('starter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    $ionicLoading.show();
 	  
 	console.log('MyCordovaPlugin: start the login logic on the plugin...');
 	MyCordovaPlugin.login({"username":"fsdemo-manager", "password":"FuelStation17!"}, function(res) {
-								// Success								
+								// Success
+								console.log('CognitoSession:');
 								console.log(res);
-								$ionicPopup.alert({
-									title: 'Login Success',
-									template: res
-								});
+								$scope.closeLogin();
+								$ionicLoading.hide();
 							}, function(err) {
 								 // Error : err
 								 console.error(err);
+								$ionicLoading.hide();
 							 });
-
-//  	MyCordovaPlugin.getDate(function(res) {
-//							   console.log(res);
-//							   }, function(err) {
-//							   console.log(err);
-//							   });
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
   };
 	
 })
