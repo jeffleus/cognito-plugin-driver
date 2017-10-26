@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $timeout) {
+.controller('AppCtrl', function($scope, $q, $timeout, $ionicModal, $ionicLoading, AuthSvc) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -25,7 +25,18 @@ angular.module('starter.controllers', [])
 
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+	  if (AuthSvc.isAuthenticated()) {
+		  console.log('logging out');
+		  $ionicLoading.show();
+		  AuthSvc.logout().catch(function(err) {
+			  console.error('AppCtrl', err);
+		  }).finally(function() {
+			  $ionicLoading.hide();
+		  });
+	  } else {
+		  console.log('open login modal');
+		  $scope.modal.show();
+	  }
   };
 
   // Perform the login action when the user submits the login form
@@ -33,17 +44,27 @@ angular.module('starter.controllers', [])
     $ionicLoading.show();
 	  
 	console.log('MyCordovaPlugin: start the login logic on the plugin...');
-	MyCordovaPlugin.login({"username":"fsdemo-manager", "password":"FuelStation17!"}, function(res) {
-								// Success
-								console.log('CognitoSession:');
-								console.log(res);
-								$scope.closeLogin();
-								$ionicLoading.hide();
-							}, function(err) {
-								 // Error : err
-								 console.error(err);
-								$ionicLoading.hide();
-							 });
+//	MyCordovaPlugin.login({"username":"fsdemo-manager", "password":"FuelStation17!"}, function(res) {
+//								// Success
+//								console.log('CognitoSession:');
+//								console.log(res);
+//								$scope.closeLogin();
+//								$ionicLoading.hide();
+//							}, function(err) {
+//								 // Error : err
+//								 console.error(err);
+//								$ionicLoading.hide();
+//							 });
+		AuthSvc.login({"username":"fsdemo-manager", "password":"FuelStation17!"})
+		.then(function(result) {
+			console.log('CognitoSession:');
+			console.log(result);
+			$scope.closeLogin();
+			$ionicLoading.hide();		  
+		}).catch(function(err) {
+			console.error(err);
+			$ionicLoading.hide();
+		});
   };
 	
 })
