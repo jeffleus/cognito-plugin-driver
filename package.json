@@ -23,5 +23,8 @@
       "version": "",
       "locator": "ios"
     }
-  ]
+  ],
+  "dependencies": {
+    "ionic-native": "^2.9.0"
+  }
 }
