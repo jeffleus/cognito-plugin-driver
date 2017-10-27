@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $q, $timeout, $ionicModal, $ionicLoading, AuthSvc) {
+.controller('AppCtrl', function($scope, $q, $timeout, $ionicModal, $ionicLoading, $cordovaDevice, AuthSvc) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -10,7 +10,11 @@ angular.module('starter.controllers', [])
   //});
   // Form data for the login modal
   $scope.loginData = {};
-
+  document.addEventListener("deviceready", function () {
+      var device = $cordovaDevice.getDevice()
+      console.log('Device UUID is: ' + device.uuid);
+  });
+    
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
