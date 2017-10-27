@@ -46,7 +46,7 @@ angular.module('starter.services', [])
 				reject('MyCordovaPlugin logut not found.  Are you running on a device, or simulator?  Did you add the plugin?');
 				return;
 			}
-			MyCordovaPlugin.logout(null, function(result) {
+			MyCordovaPlugin.logout(function(result) {
 				self.session = null;
 				console.log('successful logout');
 				resolve(result);
@@ -95,7 +95,7 @@ angular.module('starter.services', [])
 			} else {
 				return reject('there is no current authenticated session');
 			}
-		};
+		});
 	}
 	
 });
