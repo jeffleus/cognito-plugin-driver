@@ -9,6 +9,7 @@ angular.module('starter.services', [])
 	self.logout = _logout;
 	self.refresh = _refresh;
 	self.isAuthenticated = _isAuthenticated;
+	self.getUserType = _getUserType;
 	
 	self.session = null;
 	self.token = null;
@@ -84,7 +85,7 @@ angular.module('starter.services', [])
 	
 	function _getUserType() {
 		return $q(function(resolve, reject) {
-			if (self.session) {
+			if (self.session && self.token) {
 				var base64Url = self.token.split('.')[1];
 				var base64 = base64Url.replace('-', '+').replace('_', '/');
 				var props = JSON.parse(window.atob(base64));
